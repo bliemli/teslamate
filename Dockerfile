@@ -65,12 +65,13 @@ ENV LANG=C.UTF-8 \
 RUN apk add --no-cache ncurses-libs openssl tini tzdata
 
 WORKDIR $HOME
-RUN chown -R nobody:nobody .
-USER nobody:nobody
+RUN chown -R nobody:root .
+USER nobody:root
 
-COPY --chown=nobody:nobody entrypoint.sh /
-COPY --from=builder --chown=nobody:nobody /opt/built .
-RUN mkdir .srtm_cache
+COPY --chown=nobody:root entrypoint.sh /
+COPY --from=builder --chown=nobody:root /opt/built .
+RUN mkdir .srtm_cache && \
+    chmod 775 $HOME/bin/teslamate
 
 EXPOSE 4000
 
